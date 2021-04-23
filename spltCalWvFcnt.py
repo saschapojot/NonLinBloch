@@ -23,23 +23,23 @@ for g in gVals:
         xTmp = meanXAndXWd(vecTmp)
         xPos.append(xTmp)
         # wdAll.append(wdTmp)
-        drift = [elem - xc for elem in xPos]
-        posMax = np.max(drift)
-        posMin = np.min(drift)
+    drift = [elem - xc for elem in xPos]
+    posMax = np.max(drift)
+    posMin = np.min(drift)
 
-        # posDiff = 0.1
-        # tickNum = int((posMax - posMin) / posDiff)
-        # yTicks = [posMin + j * posDiff for j in range(0, tickNum + 2)]
-        tAll = [dt * q for q in range(0, Q)]
-        plt.figure(figsize=(20, 20))
-        # plt.yticks(yTicks)
-        plt.plot(tAll, drift, color="black")
-        plt.xlabel("time")
-        plt.ylabel("avg position")
-        plt.title("g = " + str(g))
-        plt.savefig(outDir + "g" + str(g) + "position.png")
-        plt.close()
-        # write params info
+    # posDiff = 0.1
+    # tickNum = int((posMax - posMin) / posDiff)
+    # yTicks = [posMin + j * posDiff for j in range(0, tickNum + 2)]
+    tAll = [dt * q for q in range(0, Q)]
+    plt.figure(figsize=(20, 20))
+    # plt.yticks(yTicks)
+    plt.plot(tAll, drift, color="black")
+    plt.xlabel("time")
+    plt.ylabel("avg position")
+    plt.title("g = " + str(g))
+    plt.savefig(outDir + "g" + str(g) + "position.png")
+    plt.close()
+    # write params info
 
     outTxt = outDir +"g"+str(g)+ "info.txt"
 
@@ -54,5 +54,8 @@ for g in gVals:
     fptr.write(inspect.getsource(v))
     fptr.write(inspect.getsource(w))
     fptr.close()
+
+
+
 tEnd = datetime.now()
 print("computation time: ", tEnd - tStart)
