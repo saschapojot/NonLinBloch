@@ -2,13 +2,14 @@ from spltFuncs import *
 
 import inspect
 
-outDir = "./pump1/"
-gVals=[0]
+outDir = "./pump10/"
+gVals=[0.5]
 tStart = datetime.now()
 for g in gVals:
     dataAll=[]
     dataAll.append(psi0)
     for q in range(0,Q):
+        #time evolution at q=0,1,...,Q-1
         psiCurr = dataAll[q]
         psiNext = S2(psiCurr, q,g)
         psiNext = reNormalization(psiNext)
@@ -17,7 +18,7 @@ for g in gVals:
     np.savetxt(outCsvName,dataAll,delimiter=",")
     xPos = []
     # wdAll=[]
-    for q in range(0, Q):
+    for q in range(0, Q+1):
         vecTmp = dataAll[q]
 
         xTmp = meanXAndXWd(vecTmp)
@@ -30,7 +31,7 @@ for g in gVals:
     # posDiff = 0.1
     # tickNum = int((posMax - posMin) / posDiff)
     # yTicks = [posMin + j * posDiff for j in range(0, tickNum + 2)]
-    tAll = [dt * q for q in range(0, Q)]
+    tAll = [dt * q for q in range(0, Q+1)]
     plt.figure(figsize=(20, 20))
     # plt.yticks(yTicks)
     plt.plot(tAll, drift, color="black")
@@ -48,6 +49,10 @@ for g in gVals:
     fptr.write("g=" + str(g) + "\n")
     fptr.write("omega=" + str(omega) + "\n")
     fptr.write("omegaF=" + str(omegaF) + "\n")
+    fptr.write("d0="+str(d0)+"\n")
+    fptr.write("D0="+str(D0)+"\n")
+    fptr.write("J="+str(J)+"\n")
+    fptr.write("k0="+str(k0)+"\n")
     fptr.write(inspect.getsource(x))
     fptr.write(inspect.getsource(y))
     fptr.write(inspect.getsource(u))

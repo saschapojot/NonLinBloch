@@ -3,17 +3,6 @@ from consts import *
 
 # this module contains functions that are used to compute the ode with OBC/PBC
 
-def u(t):
-    # return np.sin(omega * t) ** 2
-    return D0 * np.cos(omega * t)
-
-
-def v(t):
-    return J + d0 * np.sin(omega * t)
-
-
-def w(t):
-    return J - d0 * np.sin(omega * t)
 
 
 def x(n):
