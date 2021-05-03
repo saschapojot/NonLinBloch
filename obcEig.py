@@ -115,7 +115,7 @@ def energyAtt(t, g):
     rowN,colN=vecsAll.shape
 
 
-    for j in range(0, colN):
+    for j in range(0, 1):
         EjAllTmp = []
 
         vecj = vecsAll[:, j]  # init vec
@@ -159,7 +159,7 @@ eValsAll=[]
 vecAll=[]
 qRange=range(0,TGrid+1)
 tAll=[qVal*deltaT for qVal in qRange]
-g=1.2
+g=0
 for tCurr in tAll:
     eCurr,vecCurr=energyAtt(tCurr,g)
     eValsAll.append(eCurr)

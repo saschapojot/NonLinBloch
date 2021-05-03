@@ -1,5 +1,4 @@
 from consts import *
-import plotly.express as px
 import plotly.graph_objects as go
 
 
@@ -26,7 +25,7 @@ deltaT = T / tGridNum
 tValsAll = [deltaT * q for q in range(0, tGridNum + 1)]
 kValsAll = [deltaK * j for j in range(0, kGridNum + 1)]
 
-gVals = [0,0.1,0.2,0.5,0.8,1,1.2,1.5,1.8,2.0]
+gVals = [0]
 for g in gVals:
     tKEAll = []
     for tTmp in tValsAll:
@@ -48,7 +47,7 @@ for g in gVals:
             for rtTmp in rtsTmp:
              if np.isreal(rtTmp):
                    tKEAll.append([tTmp,kTmp,np.real(rtTmp)])
-
+    # np.savetxt("rootsg"+str(g)+".txt",tKEAll)
     tToPlot=[]
     kToPlot=[]
     eToplot=[]
@@ -87,7 +86,7 @@ for g in gVals:
     figGo.update_layout(scene=dict(xaxis_title="t",
                                    yaxis_title="k",
                                    zaxis_title="E"),
-                        title_text="g"+str(g))
+                                    title_text="g="+str(g))
     figGo.write_html(outDirFile+".html")
 
 
