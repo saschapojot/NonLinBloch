@@ -48,7 +48,8 @@ dt = tTot / Q
 # plt.show()
 # shape factor from one band
 t0=0
-k0=0
+L=N
+k0=2*np.pi/(L)*0
 AVal=(v(t0)+w(t0))*np.cos(k0)
 BVal=(v(t0)-w(t0))*np.sin(k0)
 CVal=u(t0)
@@ -58,6 +59,19 @@ v10=1j*BVal-AVal
 v11=CVal+EVAL
 uA=v10
 uB=v11
+def uAuBAt0(k):
+    '''
+
+    :param k: momentum
+    :return: uA, uB values at momentum k
+    '''
+    AValTmp=(v(t0)+w(t0))*np.cos(k)
+    BValTmp=(v(t0)-w(t0))*np.sin(k)
+    CValTmp=u(t0)
+    EValTmp=np.sqrt(AValTmp**2+BValTmp**2+CValTmp**2)
+    uATmp=1j*BValTmp-AValTmp
+    uBTmp=CValTmp+EValTmp
+    return [uATmp,uBTmp]
 
 
 # for j in range(0, N):
@@ -81,29 +95,35 @@ def l2Norm(vec):
     for j in range(0,len(vec)):
         tmp+=np.abs(vec[j])**2
     return np.sqrt(tmp)
-j0=xc
-kIndAll=list(range(0,2*N))
-kValsAll=[2*np.pi*kIndTmp/(2*N) for kIndTmp in kIndAll]
+j0=N
+
+kIndAll=list(range(0,L))
+kValsAll=[2*np.pi*(kIndTmp-int(N/2))/(L) for kIndTmp in kIndAll]
 fValsAll=[np.exp(-(kValsAll[kIndTmp]+k0)**2*sgm**2+1j*j0*(kValsAll[kIndTmp]+k0)) for kIndTmp in kIndAll]
 psi0=np.zeros(2*N,dtype=complex)
 
 for n in range(0,N):
     #psi2n
     psi2nVal=0
+    psi2np1Val = 0
     for kIndTmp in kIndAll:
-        psi2nVal+=fValsAll[kIndTmp]*np.exp(-1j*kValsAll[kIndTmp]*2*n)
-
-    psi0[2*n]=psi2nVal*uA
+        uATmp,uBTmp=uAuBAt0(kValsAll[kIndTmp])
+        psi2nVal+=fValsAll[kIndTmp]*np.exp(-1j*kValsAll[kIndTmp]*(2*n))*uATmp
+        psi2np1Val += fValsAll[kIndTmp] * np.exp(-1j * kValsAll[kIndTmp] * (2 * n + 1))*uBTmp
+    #psi2n
+    psi0[2*n]=psi2nVal
     #psi2n+1
-    psi2np1Val=0
-    for kIndTmp in kIndAll:
-        psi2np1Val+=fValsAll[kIndTmp]*np.exp(-1j*kValsAll[kIndTmp]*(2*n+1))
-    psi0[2*n+1]=psi2np1Val*uB
+    psi0[2*n+1]=psi2np1Val
 
+for j in range(0,500):
+    psi0[j]=psi0[501]
+for j in range(len(psi0)-500,len(psi0)):
+    psi0[j]=psi0[len(psi0)-501]
 psi0/=l2Norm(psi0)
+
 print(np.max(np.abs(psi0))**2/np.min(np.abs(psi0))**2)
 plt.figure()
 plt.plot(range(0,2*N),np.abs(psi0)**2,color="black")
-plt.show()
+plt.savefig("tmp.png")
 
 
