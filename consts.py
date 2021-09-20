@@ -95,7 +95,7 @@ def l2Norm(vec):
     for j in range(0,len(vec)):
         tmp+=np.abs(vec[j])**2
     return np.sqrt(tmp)
-j0=N
+j0=N/2
 
 kIndAll=list(range(0,L))
 kValsAll=[2*np.pi*(kIndTmp-int(N/2))/(L) for kIndTmp in kIndAll]
@@ -108,17 +108,17 @@ for n in range(0,N):
     psi2np1Val = 0
     for kIndTmp in kIndAll:
         uATmp,uBTmp=uAuBAt0(kValsAll[kIndTmp])
-        psi2nVal+=fValsAll[kIndTmp]*np.exp(-1j*kValsAll[kIndTmp]*(2*n))*uATmp
-        psi2np1Val += fValsAll[kIndTmp] * np.exp(-1j * kValsAll[kIndTmp] * (2 * n + 1))*uBTmp
+        psi2nVal+=fValsAll[kIndTmp]*np.exp(-1j*kValsAll[kIndTmp]*(n))*uATmp
+        psi2np1Val += fValsAll[kIndTmp] * np.exp(-1j * kValsAll[kIndTmp] * (n))*uBTmp
     #psi2n
     psi0[2*n]=psi2nVal
     #psi2n+1
     psi0[2*n+1]=psi2np1Val
 
-for j in range(0,500):
-    psi0[j]=psi0[501]
-for j in range(len(psi0)-500,len(psi0)):
-    psi0[j]=psi0[len(psi0)-501]
+# for j in range(0,500):
+#     psi0[j]=psi0[501]
+# for j in range(len(psi0)-500,len(psi0)):
+#     psi0[j]=psi0[len(psi0)-501]
 psi0/=l2Norm(psi0)
 
 print(np.max(np.abs(psi0))**2/np.min(np.abs(psi0))**2)
